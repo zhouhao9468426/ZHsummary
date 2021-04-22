@@ -1,6 +1,7 @@
 ## leetcode363.矩形区域不超过K的最大数值和  
 > https://leetcode-cn.com/problems/max-sum-of-rectangle-no-larger-than-k/  
 ***
+```
 思路一：暴力解法（超时）  
     class Solution {
     int recSum(vector<vector<int>>& matrix, int m0, int n0, int m, int n)
@@ -82,3 +83,4 @@
         return ans;
     }
 	};  
+```
