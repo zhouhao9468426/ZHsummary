@@ -43,8 +43,10 @@
         }
         return ans;
     }
-	};  
+};
+```  
 ***
+```   
 思路二：利用二维数组前缀和优化  
     class Solution {
 	public:
@@ -82,5 +84,5 @@
         }
         return ans;
     }
-	};  
+};  
 ```
