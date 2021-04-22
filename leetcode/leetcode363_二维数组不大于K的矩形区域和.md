@@ -2,6 +2,7 @@
 > https://leetcode-cn.com/problems/max-sum-of-rectangle-no-larger-than-k/  
 ***
 思路一：暴力解法（超时）  
+```
     class Solution {
     int recSum(vector<vector<int>>& matrix, int m0, int n0, int m, int n)
     {
@@ -43,8 +44,10 @@
         return ans;
     }
 	};  
+```
 ***
-思路二：利用二维数组前缀和优化
+思路二：利用二维数组前缀和优化  
+```
     class Solution {
 	public:
     int maxSumSubmatrix(vector<vector<int>>& matrix, int k) {
@@ -81,4 +84,5 @@
         }
         return ans;
     }
-	};
+	};  
+```
