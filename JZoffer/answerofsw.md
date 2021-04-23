@@ -37,4 +37,27 @@ public:
         return false;
     }
 };
+```  
+## 05.替换空格
+>https://leetcode-cn.com/problems/ti-huan-kong-ge-lcof/  
+***  
+```
+class Solution {
+public:
+    string replaceSpace(string s) {
+        string res;
+        for(int i=0; i<s.size(); ++i)
+        {
+            if(s[i] == ' ')
+            {
+                res += "%20";
+            }
+            else
+            {
+                res += s[i];
+            }
+        }
+        return res;
+    }
+};
 ```
