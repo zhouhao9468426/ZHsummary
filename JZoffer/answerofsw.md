@@ -78,4 +78,33 @@ public:
         return res;
     }
 };
+```  
+## 07.重构二叉树  
+>https://leetcode-cn.com/problems/zhong-jian-er-cha-shu-lcof/  
+***
+```
+class Solution {
+    unordered_map<int,int> umap;
+    TreeNode* dfs(vector<int>& preorder, vector<int>& inorder, int preL, int preR, int inL, int inR)
+    {
+        if(preL > preR) return nullptr; //结束条件
+        int rootVal = preorder[preL]; //根结点值为前序遍历第一个数
+        int index = umap[rootVal]; //根结点在中序遍历中的位置索引
+        int leftLen = index - inL; //左子树的长度
+        TreeNode* root = new TreeNode(rootVal);
+        root->left = dfs(preorder,inorder,preL+1,preL+leftLen,inL,index-1);
+        root->right = dfs(preorder,inorder,preL+leftLen+1,preR,index+1,inR);
+        return root;
+    }
+public:
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        int n = preorder.size();
+        if(n==0) return nullptr;
+        for(int i=0; i<n; ++i)
+        {
+            umap[inorder[i]] = i;
+        }
+        return dfs(preorder,inorder,0,n-1,0,n-1);
+    }
+};
 ```
