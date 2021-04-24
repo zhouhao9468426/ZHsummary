@@ -170,7 +170,7 @@ public:
     }
 };
 ```  
-## 11.青蛙跳台阶  
+## 10.青蛙跳台阶  
 >https://leetcode-cn.com/problems/qing-wa-tiao-tai-jie-wen-ti-lcof/   
 ***
 ```
@@ -190,7 +190,7 @@ public:
     }
 };
 ```  
-## 12.旋转排序数组查找  
+## 11.旋转排序数组查找  
 >https://leetcode-cn.com/problems/xuan-zhuan-shu-zu-de-zui-xiao-shu-zi-lcof/ 
 ***
 考虑以下三种情况：  
@@ -519,4 +519,10 @@ public:
         return dp[m][n];
     }
 };
+```  
+## 20.表示数值的字符串  
+>https://leetcode-cn.com/problems/biao-shi-shu-zhi-de-zi-fu-chuan-lcof/  
+***
+```
+
 ```
