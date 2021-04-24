@@ -697,4 +697,25 @@ public:
         return res;
     }
 };
+```  
+## 22.链表中倒数第k个结点  
+>https://leetcode-cn.com/problems/lian-biao-zhong-dao-shu-di-kge-jie-dian-lcof/   
+***  
+```
+class Solution {
+public:
+    ListNode* getKthFromEnd(ListNode* head, int k) {
+        ListNode* pre = head, *cur = head;
+        for(int i=0; i<k && cur; ++i)
+        {
+            cur = cur->next;
+        }
+        while(cur)
+        {
+            cur = cur->next;
+            pre = pre->next;
+        }
+        return pre;
+    }
+};
 ```
