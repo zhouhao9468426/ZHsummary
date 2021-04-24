@@ -465,4 +465,58 @@ public:
         return res;
     }
 };
+```  
+## 18.删除链表节点  
+>https://leetcode-cn.com/problems/shan-chu-lian-biao-de-jie-dian-lcof/  
+***
+```
+class Solution {
+public:
+    ListNode* deleteNode(ListNode* head, int val) {
+        ListNode* preHead = new ListNode(0);
+        preHead->next = head;
+        ListNode* pre = preHead, *cur = head;
+        //cur指向待删除的节点，pre指向前一个节点
+        while(cur && cur->val != val)
+        {
+            cur = cur->next;
+            pre = pre->next;
+        }
+        pre->next = cur->next;
+        return preHead->next;
+    }
+};
+```  
+## 19.正则表达式匹配  
+>https://leetcode-cn.com/problems/zheng-ze-biao-da-shi-pi-pei-lcof/  
+***
+```
+class Solution {
+public:
+    bool isMatch(string s, string p) {
+        int m = s.size(),n = p.size();
+        vector<vector<bool>> dp(m+1,vector<bool>(n+1));
+        dp[0][0] = true;
+        for(int j=2; j<=n; ++j)
+        {
+            if(p[j-1]=='*') dp[0][j] = dp[0][j-2];
+        }
+        for(int i=1; i<=m; ++i)
+        {
+            for(int j=1; j<=n; ++j)
+            {
+                if(p[j-1] == '*' && j>=2)
+                {
+                    dp[i][j] = dp[i][j-2];
+                    if(p[j-2]==s[i-1] || p[j-2]=='.') dp[i][j] = dp[i-1][j] || dp[i][j-1] || dp[i][j-2];
+                }
+                else
+                {
+                    dp[i][j] = dp[i-1][j-1] && (p[j-1]==s[i-1] || p[j-1]=='.');
+                }
+            }
+        }
+        return dp[m][n];
+    }
+};
 ```
