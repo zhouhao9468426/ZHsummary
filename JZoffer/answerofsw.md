@@ -401,4 +401,68 @@ public:
         return res;
     }
 };
+```   
+## 15.统计二进制中的1的个数
+>https://leetcode-cn.com/problems/er-jin-zhi-zhong-1de-ge-shu-lcof/ 
+***
+```
+class Solution {
+public:
+    int hammingWeight(uint32_t n) {
+        //十进制转化二进制过程
+        int count=0;
+        while(n)
+        {
+            if(n%2) count++;
+            n = n>>1;
+        }
+        return count;
+    }
+}; 
+``` 
+## 16.数值的整数次方  
+>https://leetcode-cn.com/problems/shu-zhi-de-zheng-shu-ci-fang-lcof/  
+***  
+```
+class Solution {
+public:
+    double myPow(double x, int n) {
+        if(abs(x-1.0)<1e-7) return 1.0;
+        double ans = 1.0;
+        long num = n;
+        if(n<0)
+        {
+            num = -num;
+            x = 1/x;
+        }
+        while(num>0)
+        {
+            if(num&1) ans *= x;
+            x *=x;
+            num = num>>1;
+        }
+        return ans;
+    }
+};
+```  
+## 17.打印从1到最大的n位数  
+>https://leetcode-cn.com/problems/da-yin-cong-1dao-zui-da-de-nwei-shu-lcof/ 
+***
+```
+class Solution {
+public:
+    vector<int> printNumbers(int n) {
+        int num=1;
+        for(int i=0; i<n; ++i)
+        {
+            num *= 10;
+        }
+        vector<int> res(num-1);
+        for(int i=0; i<num-1; ++i)
+        {
+            res[i] = i+1;
+        }
+        return res;
+    }
+};
 ```
