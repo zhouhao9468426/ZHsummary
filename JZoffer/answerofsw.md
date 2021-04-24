@@ -107,4 +107,48 @@ public:
         return dfs(preorder,inorder,0,n-1,0,n-1);
     }
 };
+```  
+## 09.用两个栈来实现队列  
+>https://leetcode-cn.com/problems/yong-liang-ge-zhan-shi-xian-dui-lie-lcof/ 
+***
+```  
+class CQueue {
+    stack<int> stkIn,stkOut;
+public:
+    CQueue() {
+        while(!stkIn.empty())
+        {
+            stkIn.pop();
+        }
+        while(!stkOut.empty())
+        {
+            stkOut.pop();
+        }
+    }
+    
+    void appendTail(int value) {
+        stkIn.push(value);
+    }
+    
+    int deleteHead() {
+        if(stkOut.empty())
+        {
+            while(!stkIn.empty())
+            {
+                stkOut.push(stkIn.top());
+                stkIn.pop();
+            }
+        }
+        if(stkOut.empty())
+        {
+            return -1;
+        }
+        else
+        {
+            int tmp = stkOut.top();
+            stkOut.pop();
+            return tmp;
+        }
+    }
+};
 ```
