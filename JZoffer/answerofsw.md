@@ -189,4 +189,35 @@ public:
         return cur;
     }
 };
+```  
+## 12.旋转排序数组查找  
+>https://leetcode-cn.com/problems/xuan-zhuan-shu-zu-de-zui-xiao-shu-zi-lcof/ 
+***
+考虑以下三种情况：  
+1 0 1 1 1   
+1 1 0 1 1  
+1 1 1 0 1  
+当nums[mid] > nums[right]时，最小元素位于[mid+1,right]区间内;  
+当nums[mid] <= nums[right]时，考虑上面的三种情况，可以确定最小元素位于[left,right-1]内。  
+```
+class Solution {
+public:
+    int minArray(vector<int>& numbers) {
+        int left = 0, right = numbers.size()-1;
+        while(left < right)
+        {
+            if(numbers[left]<numbers[right]) return numbers[left];
+            int mid = left + ((right-left)>>1);
+            if(numbers[mid]>numbers[right])
+            {
+                left = mid + 1;
+            }
+            else
+            {
+                right--;
+            }
+        }
+        return numbers[left];
+    }
+};
 ```
