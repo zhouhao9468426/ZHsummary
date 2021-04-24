@@ -322,4 +322,55 @@ public:
         return res;
     }
 };
+```  
+## 14.剪绳子  
+>https://leetcode-cn.com/problems/jian-sheng-zi-lcof/  
+***  
+(1)数学计算：
+```
+class Solution {
+public:
+    int cuttingRope(int n) {
+        int res=1;
+        if(n==2) return 1;
+        else if(n==3) return 2;
+        while(n>0)
+        {
+            if(n<3 || n==4)
+            {
+                res *= n;
+                break;
+            }
+            else 
+            {
+                res *= 3;
+                n = n - 3;
+            }
+        }
+        return res;
+    }
+};
+```  
+(2)动态规划：  
+```
+class Solution {
+public:
+    int cuttingRope(int n) {
+        if(n<4) return n-1;
+        vector<int> dp(n+1);
+        dp[1] = 1;
+        dp[2] = 2;
+        dp[3] = 3;
+        for(int i=4; i<=n; ++i)
+        {
+            int maxAns = 0;
+            for(int j=1; j<=i/2; ++j)
+            {
+                maxAns = max(maxAns,dp[j]*dp[i-j]);
+            }
+            dp[i] = maxAns;
+        }
+        return dp[n];
+    }
+};
 ```
