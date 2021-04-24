@@ -220,4 +220,43 @@ public:
         return numbers[left];
     }
 };
+```  
+## 12.矩阵中的路径  
+>https://leetcode-cn.com/problems/ju-zhen-zhong-de-lu-jing-lcof/ 
+***
+```
+class Solution {
+    bool backtrack(vector<vector<char>>& board, string word, int index, int i, int j, vector<vector<bool>>& visited)
+    {
+        if(i<0 || j<0 || i>=board.size() || j>=board[0].size() || word[index]!=board[i][j]) return false;
+        if(index == word.size()-1) return true;
+        //上下左右四个方向
+        bool res = false;
+        if(word[index] == board[i][j])
+        {
+            visited[i][j] = true;
+            res = (backtrack(board,word,index+1,i,j+1,visited) || backtrack(board,word,index+1,i,j-1,visited)
+            || backtrack(board,word,index+1,i-1,j,visited) || backtrack(board,word,index+1,i+1,j,visited));
+            visited[i][j] = false;
+        }
+        return res;
+    }
+public:
+    bool exist(vector<vector<char>>& board, string word) {
+        int m=board.size();
+        int n=board[0].size();
+        vector<vector<bool>> visited(m,vector<bool>(n));
+        for(int i=0; i<m; ++i)
+        {
+            for(int j=0; j<n; ++j)
+            {
+                if(backtrack(board,word,0,i,j,visited))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+};
 ```
