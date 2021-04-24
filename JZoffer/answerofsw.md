@@ -259,4 +259,39 @@ public:
         return false;
     }
 };
+```  
+## 13.机器人运动范围  
+>https://leetcode-cn.com/problems/ji-qi-ren-de-yun-dong-fan-wei-lcof/  
+***
+```
+class Solution {
+    int getSum(int num)
+    {
+        int sum = 0;
+        while(num)
+        {
+            sum += num%10;
+            num = num/10;
+        }
+        return sum;
+    }
+public:
+    int movingCount(int m, int n, int k) {
+        vector<vector<int>> visit(m,vector<int>(n));
+        visit[0][0] = 1;
+        int res = 1;
+        for(int i=0; i<m; ++i)
+        {
+            if(getSum(i)>k) break;
+            for(int j=0; j<n; ++j)
+            {
+                if(getSum(i)+getSum(j)>k || i==0 && j==0) continue;
+                if(i>0) visit[i][j] |= visit[i-1][j];
+                if(j>0) visit[i][j] |= visit[i][j-1];
+                res += visit[i][j];
+            }
+        }
+        return res;
+    }
+};
 ```
