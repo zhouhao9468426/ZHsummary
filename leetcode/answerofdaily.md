@@ -59,4 +59,28 @@ public:
         return dp[target];
     }
 };
+```  
+## 897.递增顺序搜索树   
+>https://leetcode-cn.com/problems/increasing-order-search-tree/  
+***
+```
+class Solution {
+    TreeNode* pre;
+    void dfs(TreeNode* root)
+    {
+        if(root==nullptr) return;
+        dfs(root->left);
+        pre->right = root;
+        root->left = nullptr;
+        pre = root;
+        dfs(root->right);
+    }
+public:
+    TreeNode* increasingBST(TreeNode* root) {
+        TreeNode* newRoot = new TreeNode(0);
+        pre = newRoot;
+        dfs(root);
+        return newRoot->right;
+    }
+};
 ```
