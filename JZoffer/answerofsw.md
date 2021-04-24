@@ -638,4 +638,63 @@ public:
         return st == STATE_INTEGER || st == STATE_POINT || st == STATE_FRACTION || st == STATE_EXP_NUMBER || st == STATE_END;
     }
 };
+```  
+## 21.调整数组顺序使得奇数位于前半部分，偶数位于后半部分  
+>https://leetcode-cn.com/problems/diao-zheng-shu-zu-shun-xu-shi-qi-shu-wei-yu-ou-shu-qian-mian-lcof/  
+***   
+(1)不使用额外空间：
+```
+class Solution {
+public:
+    vector<int> exchange(vector<int>& nums) {
+        if(nums.size()==0) return nums;
+        int left = 0, right = nums.size()-1;
+        while(left < right)
+        {
+            if(nums[left]%2==0) 
+            {
+                while(nums[right]%2==0 && left < right)
+                {
+                    right--;
+                }
+                if(left < right)
+                {
+                    swap(nums[left],nums[right]);
+                    right--;
+                    left++;
+                }
+            }
+            else 
+            {
+                left++;
+            }
+        }
+        return nums;
+    }
+};
+```   
+
+(2)使用额外空间：   
+```
+class Solution {
+public:
+    vector<int> exchange(vector<int>& nums) {
+        int len = nums.size();
+        if(len<2) return nums;
+        vector<int> res(len);
+        int left = 0, right = len - 1;
+        for(int i=0; i<len; ++i)
+        {
+            if(nums[i]%2==0)
+            {
+                res[right--]=nums[i];
+            }
+            else
+            {
+                res[left++]=nums[i];
+            }
+        }
+        return res;
+    }
+};
 ```
