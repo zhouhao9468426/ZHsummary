@@ -151,4 +151,42 @@ public:
         }
     }
 };
+```  
+## 10.斐波拉契数列   
+>https://leetcode-cn.com/problems/fei-bo-na-qi-shu-lie-lcof/  
+***
+```
+class Solution {
+public:
+    int fib(int n) {
+        if(n==0) return 0;
+        vector<int> dp(n+1);
+        dp[1] = 1;
+        for(int i=2; i<=n; ++i)
+        {
+            dp[i] = (dp[i-1] + dp[i-2])%1000000007;
+        }
+        return dp[n];
+    }
+};
+```  
+## 11.青蛙跳台阶  
+>https://leetcode-cn.com/problems/qing-wa-tiao-tai-jie-wen-ti-lcof/   
+***
+```
+class Solution {
+public:
+    int numWays(int n) {
+        if(n<=1) return 1;
+        int pre=1,cur=1;
+        int sum = 0;
+        for(int i=2; i<=n; ++i)
+        {
+            sum = (pre + cur)%1000000007;
+            pre = cur;
+            cur = sum;
+        }
+        return cur;
+    }
+};
 ```
