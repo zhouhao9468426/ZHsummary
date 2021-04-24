@@ -262,7 +262,8 @@ public:
 ```  
 ## 13.机器人运动范围  
 >https://leetcode-cn.com/problems/ji-qi-ren-de-yun-dong-fan-wei-lcof/  
-***
+***  
+迭代：  
 ```
 class Solution {
     int getSum(int num)
@@ -291,6 +292,33 @@ public:
                 res += visit[i][j];
             }
         }
+        return res;
+    }
+};
+```  
+递归：  
+```
+class Solution {
+    int getSum(int num)
+    {
+        int sum = 0;
+        while(num)
+        {
+            sum += num%10;
+            num = num/10;
+        }
+        return sum;
+    }
+    int dfs(int m, int n, int k, int i, int j, vector<vector<bool>>& visit)
+    {
+        if(i<0 || j<0 || i>=m || j>=n || getSum(i)+getSum(j)>k || visit[i][j]) return 0;
+        visit[i][j] = true;
+        return 1+dfs(m,n,k,i+1,j,visit)+dfs(m,n,k,i,j+1,visit)+dfs(m,n,k,i-1,j,visit)+dfs(m,n,k,i,j-1,visit);
+    }
+public:
+    int movingCount(int m, int n, int k) {
+        vector<vector<bool>> visit(m,vector<bool>(n));
+        int res = dfs(m,n,k,0,0,visit);
         return res;
     }
 };
