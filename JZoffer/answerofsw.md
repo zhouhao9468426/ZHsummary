@@ -1082,4 +1082,142 @@ public:
         return true;
     }
 };
+```   
+## 34.二叉树中和为某一值的路径  
+>https://leetcode-cn.com/problems/er-cha-shu-zhong-he-wei-mou-yi-zhi-de-lu-jing-lcof/  
+***   
+```
+class Solution {
+    vector<vector<int>> res;
+    vector<int> path;
+    void dfs(TreeNode* root, int target, int sum)
+    {
+        if(root==nullptr) return;
+        path.push_back(root->val);
+        sum += root->val;
+        if(root->left==nullptr && root->right==nullptr && sum == target)
+        {
+            res.push_back(path);
+        }
+        dfs(root->left,target,sum);
+        dfs(root->right,target,sum);
+        sum -= root->val;
+        path.pop_back();
+    }
+public:
+    vector<vector<int>> pathSum(TreeNode* root, int target) {
+        res.clear();
+        path.clear();
+        if(root==nullptr) return res;
+        dfs(root,target,0);
+        return res;
+    }
+};
+```   
+## 35.复杂链表的复制  
+>https://leetcode-cn.com/problems/fu-za-lian-biao-de-fu-zhi-lcof/  
+***  
+```
+class Solution {
+public:
+    Node* copyRandomList(Node* head) {
+        if(head==nullptr) return head;
+        Node* cur = head;
+        //创建新节点
+        while(cur)
+        {
+            Node* tmp = cur->next;
+            cur->next = new Node(cur->val);
+            cur->next->next = tmp;
+            cur = tmp;
+        } 
+        //修改random指针
+        cur = head;
+        while(cur)
+        {
+            if(cur->random)
+            {
+                cur->next->random = cur->random->next;
+            }
+            cur = cur->next->next;
+        }
+        //解绑定
+        Node* pre = head;
+        Node* res = head->next;
+        cur = head->next;
+        while(cur->next)
+        {
+            pre->next = pre->next->next;
+            cur->next = cur->next->next;
+            pre = pre->next;
+            cur = cur->next;
+        }
+        pre->next = nullptr;
+        return res;
+    }
+};
+```  
+## 36.二叉搜索树和双向链表  
+>https://leetcode-cn.com/problems/er-cha-sou-suo-shu-yu-shuang-xiang-lian-biao-lcof/  
+***   
+(1)递归：
+```
+class Solution {
+    Node* head=nullptr,*tail=nullptr;
+public:
+    Node* treeToDoublyList(Node* root) 
+    {
+        if(!root) return root;
+        inorder(root);
+        head->left = tail;
+        tail->right = head;
+        return head;
+    }
+    void inorder(Node* root)
+    {
+        if(!root) return;
+        inorder(root->left);
+        if(!tail) head = root;
+        else
+        {
+            tail->right = root;
+            root->left = tail;
+        }
+        tail = root;
+        inorder(root->right);
+    }
+};
+```  
+(2)迭代：  
+```
+class Solution {
+    Node* head=nullptr, *tail=nullptr;
+public:
+    Node* treeToDoublyList(Node* root) {
+        if(root==nullptr) return root;
+        stack<Node*> stk;
+        Node* cur = root;
+        while(cur || !stk.empty())
+        {
+            while(cur)
+            {
+                stk.push(cur);
+                cur = cur->left;
+            }
+            cur = stk.top();
+            stk.pop();
+            if(head==nullptr) head = cur;
+            else
+            {
+                cur->left = tail;
+                tail->right = cur;
+            }
+            tail = cur;
+            cur = cur->right;
+        }
+        head->left = tail;
+        tail->right = head;
+        return head;
+    }
+};
 ```
