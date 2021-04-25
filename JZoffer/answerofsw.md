@@ -944,4 +944,60 @@ public:
         return res;
     }
 };
+```  
+## 30.包含min的栈  
+>https://leetcode-cn.com/problems/bao-han-minhan-shu-de-zhan-lcof/  
+***  
+```
+class MinStack {
+public:
+    /** initialize your data structure here. */
+    stack<int> data,help;
+    MinStack() {
+
+    }
+    void push(int x) {
+        data.push(x);
+        if(help.empty() || x<=help.top()) help.push(x);
+        if(x>help.top())
+        {
+            help.push(help.top());
+        }
+    }
+    void pop() {
+        if(!data.empty() && !help.empty())
+        {
+            data.pop();
+            help.pop();
+        }
+    }
+    int top() {
+        return data.top();
+    }
+    int min() {
+        return help.top();
+    }
+};
+```  
+## 31.栈的压入和弹出序列  
+>https://leetcode-cn.com/problems/zhan-de-ya-ru-dan-chu-xu-lie-lcof/  
+***  
+```
+class Solution {
+public:
+    bool validateStackSequences(vector<int>& pushed, vector<int>& popped) {
+        stack<int> stk;
+        int index = 0;
+        for(int i=0; i<pushed.size(); ++i)
+        {
+            stk.push(pushed[i]);
+            while(!stk.empty() && stk.top() == popped[index])
+            {
+                stk.pop();
+                index++;
+            }
+        }
+        return stk.empty();
+    }
+};
 ```
