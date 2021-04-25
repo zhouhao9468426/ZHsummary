@@ -62,7 +62,8 @@ public:
 ```  
 ## 897.递增顺序搜索树(2021/4/25)   
 >https://leetcode-cn.com/problems/increasing-order-search-tree/  
-***
+***  
+递归一：
 ```
 class Solution {
     TreeNode* pre;
@@ -81,6 +82,61 @@ public:
         pre = newRoot;
         dfs(root);
         return newRoot->right;
+    }
+};
+```  
+递归二：  
+```
+class Solution {
+    void dfs(TreeNode* root, vector<int>& res)
+    {
+        if(root==nullptr) return;
+        dfs(root->left,res);
+        res.push_back(root->val);
+        dfs(root->right,res);
+    }
+public:
+    TreeNode* increasingBST(TreeNode* root) {
+        if(root==nullptr) return nullptr;
+        vector<int> res;
+        dfs(root,res);
+        TreeNode* cur = new TreeNode(res[0]);
+        TreeNode* pre = cur;
+        for(int i=1; i<res.size(); ++i)
+        {
+            TreeNode* tmp = new TreeNode(res[i]);
+            cur->right = tmp;
+            cur = tmp;
+        }
+        return pre;
+    }
+};
+```  
+迭代：  
+```
+class Solution {
+public:
+    TreeNode* increasingBST(TreeNode* root) {
+        if(root==nullptr) return nullptr;
+        TreeNode* pre = new TreeNode(0);
+        TreeNode* res = pre;
+        stack<TreeNode*> stk;
+        TreeNode* cur = root;
+        while(!stk.empty() || cur)
+        {
+            while(cur)
+            {
+                stk.push(cur);
+                cur = cur->left;
+            }
+            cur = stk.top();
+            stk.pop();
+            res->right = cur;
+            cur->left = nullptr;
+            res = cur;
+            cur = cur->right;
+        }
+        return pre->right;
     }
 };
 ```
