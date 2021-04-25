@@ -1431,4 +1431,84 @@ public:
         return maxheap.size()==minheap.size() ? (mid1+mid2)*0.5 : mid2;
     }
 };
+```  
+## 42.连续子数组的最大和  
+>https://leetcode-cn.com/problems/lian-xu-zi-shu-zu-de-zui-da-he-lcof/  
+***  
+```
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        vector<int> dp(nums.size());
+        dp[0] = nums[0];
+        int res = nums[0];
+        for(int i=1; i<nums.size(); ++i)
+        {
+            dp[i] = max(nums[i],nums[i]+dp[i-1]);
+            if(dp[i]>res)
+            {
+                res = dp[i];
+            }
+        }
+        return res;
+    }
+};
+```  
+## 43.1-n的整数中1出现的次数  
+>https://leetcode-cn.com/problems/1nzheng-shu-zhong-1chu-xian-de-ci-shu-lcof/  
+***  
+```
+class Solution {
+public:
+    int countDigitOne(int n) {
+        long digit = 1;
+        int high = n/10, cur = n%10, low = 0;
+        int res=0;
+        while(cur || high)
+        {
+            if(cur==0) 
+            {
+                res += digit * high;
+            }
+            else if(cur==1)
+            {
+                res += (high*digit + low + 1);
+            }
+            else
+            {
+                res += (high+1)*digit;
+            }
+            low += cur*digit;
+            cur = high%10;
+            high = high/10;
+            digit *= 10;
+        }
+        return res;
+    }
+};
+```  
+## 44.数字序列中的某一位数字  
+>https://leetcode-cn.com/problems/shu-zi-xu-lie-zhong-mou-yi-wei-de-shu-zi-lcof/  
+***  
+```
+class Solution {
+public:
+    int findNthDigit(int n) {
+        if(n==0) return 0;
+        int digit = 1,start=1;
+        int index = start*9*digit;
+        while(n>index)
+        {
+            n = n-index;
+            digit++;
+            start *= 10;
+            index = start * 9 * digit;
+        }
+        int num = start + (n-1)/digit;
+        int mod = (n-1)%digit;
+        string str = to_string(num);
+        int res = int(str[mod] - '0');
+        return res;
+    }
+};
 ```
