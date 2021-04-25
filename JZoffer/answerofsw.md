@@ -772,4 +772,26 @@ public:
         return res;
     }
 };
+```  
+## 26.树的子结构  
+>https://leetcode-cn.com/problems/shu-de-zi-jie-gou-lcof/  
+***  
+```
+class Solution {
+    bool isSub(TreeNode* A, TreeNode* B)
+    {
+        if(B==nullptr) return true;
+        if(A==nullptr || A->val != B->val) return false;
+        return isSub(A->left,B->left) && isSub(A->right,B->right);
+    }
+public:
+    bool isSubStructure(TreeNode* A, TreeNode* B) {
+        if(!A || !B) return false;
+        bool res = false;
+        if(A->val == B->val) res = isSub(A,B);
+        if(!res) res = isSubStructure(A->left,B);
+        if(!res) res = isSubStructure(A->right,B);
+        return res; 
+    }
+};
 ```
