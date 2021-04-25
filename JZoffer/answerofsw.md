@@ -1220,4 +1220,60 @@ public:
         return head;
     }
 };
+```   
+## 37.序列化二叉树  
+>https://leetcode-cn.com/problems/xu-lie-hua-er-cha-shu-lcof/  
+***  
+```
+class Codec {
+    string resStr;
+    void dfs(TreeNode* root)
+    {
+        if(root==nullptr)
+        {
+            resStr += "null,";
+            return;
+        }
+        resStr += (to_string(root->val)+',');
+        dfs(root->left);
+        dfs(root->right);
+    }
+    queue<string> que;
+    TreeNode* dfs1()
+    {
+        string cur = que.front();
+        que.pop();
+        if(cur == "null") return nullptr;
+        TreeNode* root = new TreeNode(stoi(cur));
+        root->left = dfs1();
+        root->right = dfs1();
+        return root;
+    }
+public:
+
+    // Encodes a tree to a single string.
+    string serialize(TreeNode* root) {
+        if(root==nullptr) return "null";
+        dfs(root);
+        return resStr;
+    }
+
+    // Decodes your encoded data to tree.
+    TreeNode* deserialize(string data) {
+        //分离数据
+        int i=0,j=0;
+        while(i<data.size())
+        {
+            j = i;
+            while(data[i]!=',' && i<data.size())
+            {
+                i++;
+            }
+            que.push(data.substr(j,i-j));
+            i++;
+        }
+        TreeNode* root = dfs1();
+        return root;
+    }
+};
 ```
