@@ -718,4 +718,24 @@ public:
         return pre;
     }
 };
+```  
+## 24.反转链表  
+>https://leetcode-cn.com/problems/fan-zhuan-lian-biao-lcof/  
+***  
+```
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        ListNode* cur = head;
+        ListNode* pre = nullptr;
+        while(cur)
+        {
+            ListNode* tmp = cur->next;
+            cur->next = pre;
+            pre = cur;
+            cur = tmp;
+        }
+        return pre;
+    }
+};
 ```
