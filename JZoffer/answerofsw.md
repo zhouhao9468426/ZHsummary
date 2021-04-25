@@ -1511,4 +1511,53 @@ public:
         return res;
     }
 };
+```   
+## 45.把数组排成最小的数  
+>https://leetcode-cn.com/problems/ba-shu-zu-pai-cheng-zui-xiao-de-shu-lcof/  
+***  
+```
+class Solution {
+    int parttion(vector<string>& strs, int left, int right)
+    {
+        int i=left, j =right;
+        string x = strs[i];
+        while(i<j)
+        {
+            while(i<j && x + strs[j] <= strs[j] + x) j--;
+            if(i<j)
+            {
+                swap(strs[i++],strs[j]);
+            }
+            while(i<j && strs[i] + x <= x + strs[i]) i++;
+            if(i<j)
+            {
+                swap(strs[j--],strs[i]);
+            }
+        }
+        strs[i] = x;
+        return i;
+    }
+    void quickSort(vector<string>& strs, int left, int right)
+    {
+        if(left>right) return;
+        int i = parttion(strs,left,right);
+        quickSort(strs,left,i-1);
+        quickSort(strs,i+1,right); 
+    }
+public:
+    string minNumber(vector<int>& nums) {
+        vector<string> strs;
+        for(int i=0; i<nums.size(); ++i)
+        {
+            strs.push_back(to_string(nums[i]));
+        }
+        quickSort(strs,0,nums.size()-1);
+        string res;
+        for(int i=0; i<strs.size();++i)
+        {
+            res += strs[i];
+        }
+        return res;
+    }
+};
 ```
