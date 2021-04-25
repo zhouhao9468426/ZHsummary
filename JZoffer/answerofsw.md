@@ -1372,4 +1372,63 @@ public:
         return vec;
     }
 };
+```  
+## 41.数据流中的中位数  
+>https://leetcode-cn.com/problems/shu-ju-liu-zhong-de-zhong-wei-shu-lcof/  
+***   
+(1)简单排序(超时)  
+```
+class MedianFinder {
+public:
+    /** initialize your data structure here. */
+    vector<int> data;
+    MedianFinder() {
+
+    }
+    
+    void addNum(int num) {
+        data.push_back(num);
+    }
+    
+    double findMedian() {
+        sort(data.begin(),data.end());
+        int n = data.size();
+        if(n%2) return double(data[n/2]);
+        return double(data[n/2]+data[n/2-1])/2;
+    }
+};
+
+```  
+(2)双堆法：  
+```
+class MedianFinder {
+    priority_queue<int, vector<int>, less<int> > maxheap;
+    priority_queue<int, vector<int>, greater<int> > minheap;
+public:
+    /** initialize your data structure here. */
+    vector<int> data;
+    MedianFinder() {
+
+    }
+    
+    void addNum(int num) {
+        if(maxheap.size()==minheap.size())
+        {
+            maxheap.push(num);
+            minheap.push(maxheap.top());
+            maxheap.pop();
+        }
+        else
+        {
+            minheap.push(num);
+            maxheap.push(minheap.top());
+            minheap.pop();
+        }
+    }
+    
+    double findMedian() {
+        int mid1 = maxheap.top(), mid2 = minheap.top();
+        return maxheap.size()==minheap.size() ? (mid1+mid2)*0.5 : mid2;
+    }
+};
 ```
