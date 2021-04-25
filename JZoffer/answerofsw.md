@@ -794,4 +794,65 @@ public:
         return res; 
     }
 };
+```  
+## 27.二叉树的镜像  
+>https://leetcode-cn.com/problems/er-cha-shu-de-jing-xiang-lcof/    
+思路：交换每一个结点的左右结点
+***  
+(1)DFS:  
+```
+class Solution {
+public:
+    TreeNode* mirrorTree(TreeNode* root) {
+        if(root==nullptr) return root;
+        swap(root->left,root->right);
+        mirrorTree(root->left);
+        mirrorTree(root->right);
+        return root;
+    }
+};
+```  
+(2)栈模拟：  
+```
+class Solution {
+public:
+    TreeNode* mirrorTree(TreeNode* root) {
+        if(root==nullptr) return root;
+        stack<TreeNode*> stk;
+        stk.push(root);
+        while(!stk.empty())
+        {
+            TreeNode* node = stk.top();
+            stk.pop();
+            swap(node->left,node->right);
+            if(node->right) stk.push(node->right);
+            if(node->left) stk.push(node->left);
+        }
+        return root;
+    }
+};
+```  
+(3)BFS：  
+```
+class Solution {
+public:
+    TreeNode* mirrorTree(TreeNode* root) {
+        if(root==nullptr) return root;
+        queue<TreeNode*> que;
+        que.push(root);
+        while(!que.empty())
+        {
+            int sz = que.size();
+            for(int i=0; i<sz; ++i)
+            {
+                TreeNode* node = que.front();
+                que.pop();
+                swap(node->left,node->right);
+                if(node->left) que.push(node->left);
+                if(node->right) que.push(node->right);
+            }
+        }
+        return root;
+    }
+};
 ```
