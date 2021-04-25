@@ -1276,4 +1276,100 @@ public:
         return root;
     }
 };
+```  
+## 38.字符串的排列  
+>https://leetcode-cn.com/problems/zi-fu-chuan-de-pai-lie-lcof/  
+***  
+```
+class Solution {
+    vector<string> res;
+    string path;
+    void backtrack(string s, vector<bool>& used)
+    {
+        if(path.length()==s.length())
+        {
+            res.push_back(path);
+            return;
+        }
+        for(int i=0; i<s.size(); ++i)
+        {
+            if(i>0 && s[i-1]==s[i] && used[i-1] == false) continue;//去重
+            if(used[i]) continue;
+            path += s[i];
+            used[i] = true;
+            backtrack(s,used);
+            path.pop_back();
+            used[i] = false;
+        }
+    }
+public:
+    vector<string> permutation(string s) {
+        res.clear();
+        path.clear();
+        sort(s.begin(),s.end());
+        vector<bool> used(s.size());
+        backtrack(s,used);
+        return res;
+    }
+};
+```   
+## 39.数组中出现次数超过一半的数字  
+>https://leetcode-cn.com/problems/shu-zu-zhong-chu-xian-ci-shu-chao-guo-yi-ban-de-shu-zi-lcof/submissions/  
+***  
+```
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        unordered_map<int,int> umap;
+        int n = nums.size();
+        for(int i=0; i<nums.size(); ++i)
+        {
+            if(umap[nums[i]]++>=n/2) return nums[i];
+        }
+        return -1;
+    }
+};
+```   
+## 40.最小的k个数  
+>https://leetcode-cn.com/problems/zui-xiao-de-kge-shu-lcof/  
+***  
+```
+class Solution {
+    int partition(vector<int>& nums, int left, int right)
+    {
+        int i = left, j = right;
+        int x = nums[i];
+        while(i<j)
+        {
+            while(nums[j]>=x && i<j) j--;
+            if(i<j)
+            {
+                swap(nums[i++],nums[j]);
+            }
+            while(nums[i]<x && i<j) i++;
+            if(i<j)
+            {
+                swap(nums[j--],nums[i]);
+            }
+        }
+        nums[i] = x;
+        return i;
+    }
+    void quickSort(vector<int>& arr, int left, int right)
+    {
+        if(left >= right) return;
+        int i = partition(arr, left, right);
+        quickSort(arr,left,i-1);
+        quickSort(arr,i+1,right);
+    }
+public:
+    vector<int> getLeastNumbers(vector<int>& arr, int k) {
+        vector<int> vec(k, 0);
+        quickSort(arr,0,arr.size()-1);
+        for (int i = 0; i < k; ++i) {
+            vec[i] = arr[i];
+        }
+        return vec;
+    }
+};
 ```
