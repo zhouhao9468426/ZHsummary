@@ -738,4 +738,38 @@ public:
         return pre;
     }
 };
+```  
+## 25.合并两个排序链表  
+>https://leetcode-cn.com/problems/he-bing-liang-ge-pai-xu-de-lian-biao-lcof/  
+***  
+```
+class Solution {
+public:
+    ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
+        if(l1==nullptr) return l2;
+        if(l2==nullptr) return l1;
+        ListNode* pre = new ListNode(0);
+        ListNode* cur = pre;
+        while(l1 && l2)
+        {
+            if(l1->val < l2->val)
+            {
+                cur->next = l1;
+                cur = cur->next;
+                l1 = l1->next;
+            }
+            else
+            {
+                cur->next = l2;
+                cur = cur->next;
+                l2 = l2->next;
+            }
+        }
+        if(l1) cur->next = l1;
+        if(l2) cur->next = l2;
+        ListNode* res = pre->next;
+        delete pre;
+        return res;
+    }
+};
 ```
