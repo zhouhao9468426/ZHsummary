@@ -855,4 +855,53 @@ public:
         return root;
     }
 };
+```  
+## 28.对称的二叉树  
+>https://leetcode-cn.com/problems/dui-cheng-de-er-cha-shu-lcof/  
+***  
+DFS:  
+
+```
+class Solution {
+    bool compare(TreeNode* left, TreeNode* right)
+    {
+        if(left && !right) return false;
+        else if(!left && right) return false;
+        else if(!left && !right) return true;
+        else if(left->val != right->val) return false;
+        bool outSide = compare(left->left, right->right);
+        bool inside = compare(left->right, right->left);
+        return outSide && inside;
+    }
+public:
+    bool isSymmetric(TreeNode* root) {
+        if(root==nullptr) return true;
+        bool res = compare(root->left, root->right);
+        return res;
+    }
+};
+```  
+队列：  
+```
+class Solution {
+public:
+    bool isSymmetric(TreeNode* root) {
+        if(root == nullptr) return true;
+        queue<TreeNode*> que;
+        que.push(root->left);
+        que.push(root->right);
+        while(!que.empty())
+        {
+            TreeNode* left = que.front();que.pop();
+            TreeNode* right = que.front();que.pop();
+            if(!left && !right) continue;
+            if(!left || !right || left->val != right->val) return false;
+            que.push(left->left);
+            que.push(right->right);
+            que.push(left->right);
+            que.push(right->left);
+        }
+        return true;
+    }
+};
 ```
