@@ -1000,4 +1000,86 @@ public:
         return stk.empty();
     }
 };
+```  
+## 32.从上到下打印二叉树  
+>https://leetcode-cn.com/problems/cong-shang-dao-xia-da-yin-er-cha-shu-lcof/  
+***  
+```
+class Solution {
+public:
+    vector<int> levelOrder(TreeNode* root) {
+        vector<int> res;
+        if(root==nullptr) return res;
+        queue<TreeNode*> que;
+        que.push(root);
+        while(!que.empty())
+        {
+            int sz = que.size();
+            for(int i=0; i<sz; ++i)
+            {
+                TreeNode* node = que.front();
+                que.pop();
+                res.push_back(node->val);
+                if(node->left) que.push(node->left);
+                if(node->right) que.push(node->right);
+            }
+        }
+        return res;
+    }
+};
+```  
+## 33.二叉搜索树的后序遍历序列  
+>https://leetcode-cn.com/problems/er-cha-sou-suo-shu-de-hou-xu-bian-li-xu-lie-lcof/  
+***   
+(1)分治法：
+```
+class Solution {
+    bool dfs(vector<int>& postorder, int left, int right)
+    {
+        if(left>=right) return true;
+        int pos = left;
+        int root = postorder[right];
+        while(postorder[pos]<root)
+        {
+            pos++;
+        }
+        int leftEnd = pos - 1;
+        while(pos<right)
+        {
+            if(postorder[pos]<root) return false;
+            pos++;
+        }
+        return dfs(postorder,left,leftEnd) && dfs(postorder,leftEnd+1,right-1);
+    }
+public:
+    bool verifyPostorder(vector<int>& postorder) {
+        int len = postorder.size();
+        if(len==0) return true;
+        return dfs(postorder,0,len-1);
+    }
+};
+```   
+(2)单调栈：  
+```
+class Solution {
+public:
+    bool verifyPostorder(vector<int>& postorder) {
+        if(postorder.size()==0) return true;
+        stack<int> stk;
+        int root = INT_MAX;
+        for(int i=postorder.size()-1; i>=0; --i)
+        {
+            //如果左子树节点大于根结点，则出现错误
+            if(postorder[i]>root) return false;
+            //找到左子树对应的父结点
+            while(!stk.empty() && stk.top()>postorder[i])
+            {
+                root = stk.top();
+                stk.pop();
+            }
+            stk.push(postorder[i]);
+        }
+        return true;
+    }
+};
 ```
