@@ -1662,4 +1662,184 @@ public:
         return res;
     }
 };
+```  
+## 48.最长不含重复字符的子字符串  
+>https://leetcode-cn.com/problems/zui-chang-bu-han-zhong-fu-zi-fu-de-zi-zi-fu-chuan-lcof/  
+***   
+(1)暴力超时
+```
+class Solution {
+    unordered_set<char> uset;
+    bool check(string s)
+    {
+        for(int i=0; i<s.size(); ++i)
+        {
+            if(uset.find(s[i]) != uset.end()) return false;
+            else
+            {
+                uset.insert(s[i]);
+            }
+        }
+        return true;
+    }
+public:
+    int lengthOfLongestSubstring(string s) {
+        int res = 0;
+        for(int i=0; i<s.size(); ++i)
+        {
+            for(int j=i; j<s.size(); ++j)
+            {
+                uset.clear();
+                if(j-i+1>res && check(s.substr(i,j-i+1)))
+                {
+                    cout << s.substr(i,j-i+1) << endl;
+                    res = j-i+1;
+                }
+            }
+        }
+        return res;
+    }
+};
+```  
+(2)双指针+哈希  
+```
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        if(s.size()<=1) return s.size();
+        int res=0;
+        int left = 0, right = 0;
+        unordered_set<char> uset;
+        while(left<=right && right < s.size())
+        {
+            if(uset.find(s[right])==uset.end())
+            {
+                uset.insert(s[right++]);
+            }
+            else
+            {
+                uset.erase(s[left++]);
+            }
+            if(res<right-left) res = right-left;
+        }
+        return res;
+    }
+};
+```   
+## 49.丑数  
+>https://leetcode-cn.com/problems/chou-shu-lcof/  
+***  
+```
+class Solution {
+public:
+    int nthUglyNumber(int n) {
+        int two = 0, three = 0, five = 0;
+        vector<int> dp(n);
+        dp[0] = 1; // dp 初始化
+
+        for (int i = 1; i < n; ++i) {
+            int t1 = dp[two] * 2, t2 = dp[three] * 3, t3 = dp[five] * 5;
+            dp[i] = min(min(t1, t2), t3);
+
+            if (dp[i] == t1) {++ two;}
+            if (dp[i] == t2) {++ three;}
+            if (dp[i] == t3) {++ five;}
+        }
+        return dp[n - 1];
+    }
+};
+```   
+## 50.第一个只出现一次的字符  
+>https://leetcode-cn.com/problems/di-yi-ge-zhi-chu-xian-yi-ci-de-zi-fu-lcof/  
+***  
+```
+class Solution {
+public:
+    char firstUniqChar(string s) {
+        unordered_map<char,int> umap;
+        for(int i=0; i<s.size(); ++i)
+        {
+            umap[s[i]]++;
+        }
+        for(int i=0; i<s.size(); ++i)
+        {
+            if(umap[s[i]]==1) return s[i];
+        }
+        return ' ';
+    }
+};
+```  
+## 51.数组中的逆序对  
+>https://leetcode-cn.com/problems/shu-zu-zhong-de-ni-xu-dui-lcof/  
+***    
+(1)暴力超时
+```
+class Solution {
+public:
+    int reversePairs(vector<int>& nums) {
+        int n = nums.size();
+        if(n<=1) return 0;
+        int count = 0;
+        for(int i=0; i<nums.size()-1; ++i)
+        {
+            for(int j=i+1; j<nums.size(); ++j)
+            {
+                if(nums[j]<nums[i]) count++;
+            }
+        }
+        return count;
+    }
+};
+```  
+(2)归并  
+```
+class Solution {
+    int res = 0;
+    vector<int> help;
+    void merge(vector<int>&nums, int left, int right)
+    {
+        for(int i=left; i<=right; ++i)
+        {
+            help[i] = nums[i];
+        }
+        int mid = left + ((right-left)>>1);
+        int i=left, j = mid+1, k = left;
+        while(i<=mid && j<=right)
+        {
+            if(help[i]<=help[j])
+            {
+                nums[k++] = help[i++];
+            }
+            else
+            {
+                nums[k++] = help[j++];
+                res += mid - i + 1;
+            }
+        }
+        while(i<=mid)
+        {
+            nums[k++] = help[i++];
+        }
+        while(j<=right)
+        {
+            nums[k++] = help[j++];
+        }
+    }
+    void mergeSort(vector<int>& nums, int left, int right)
+    {
+        if(left>=right) return;
+        int mid = left + ((right-left)>>1);
+        mergeSort(nums,left,mid);
+        mergeSort(nums,mid+1,right);
+        merge(nums,left,right); 
+    }
+public:
+    int reversePairs(vector<int>& nums) {
+        int n = nums.size();
+        if(n<=1) return 0;
+        help.resize(n,0);
+        mergeSort(nums,0,n-1);
+        return res;
+    }
+};
 ```
