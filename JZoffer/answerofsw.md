@@ -1842,4 +1842,134 @@ public:
         return res;
     }
 };
+```   
+## 52.两个链表的第一个公共结点  
+>https://leetcode-cn.com/problems/liang-ge-lian-biao-de-di-yi-ge-gong-gong-jie-dian-lcof  
+***  
 ```
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        ListNode *node1 = headA;
+        ListNode *node2 = headB;
+        
+        while (node1 != node2) {
+            node1 = node1 != NULL ? node1->next : headB;
+            node2 = node2 != NULL ? node2->next : headA;
+        }
+        return node1;
+    }
+};
+```   
+## 53.在排序数组中统计一个数字出现的次数  
+>https://leetcode-cn.com/problems/zai-pai-xu-shu-zu-zhong-cha-zhao-shu-zi-lcof/  
+***    
+(1)暴力：
+```
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        int count=0;
+        for(int i=0;i<nums.size();i++)
+        {
+            if(nums[i] == target)
+            count++;
+        }
+        return count;
+    }
+};
+```   
+(2)二分查找  
+```
+class Solution {
+    int leftSearch(vector<int>& nums, int target)
+    {
+        int left=0,right=nums.size()-1;
+        while(left<right)
+        {
+            int mid = left + ((right-left)>>1);
+            if(nums[mid]>=target)
+            {
+                right = mid;
+            }
+            else
+            {
+                left = mid+1;
+            }
+        }
+        if(nums[left]==target)
+        return left;
+        else 
+        return -1;
+    }
+    int rightSearch(vector<int>& nums, int target)
+    {
+        int left=0,right=nums.size()-1;
+        while(left<right)
+        {
+            int mid = left + ((right-left+1)>>1);
+            if(nums[mid]<=target)
+            {
+                left = mid;
+            }
+            else
+            {
+                right = mid - 1;
+            }
+        }
+        if(nums[right]==target) return right;
+        else return -1;
+    }
+public:
+    int search(vector<int>& nums, int target) {
+        //折半查找左右边界
+        int n = nums.size();
+        if(n==0) return 0;
+        int left_boundary = leftSearch(nums,target);
+        int right_boundary = rightSearch(nums,target);
+        if(left_boundary==-1) return 0;
+        return right_boundary-left_boundary+1;
+    }
+};
+```  
+## 53.0-n-1中缺失的数字  
+>https://leetcode-cn.com/problems/que-shi-de-shu-zi-lcof/  
+(1)暴力  
+```
+class Solution {
+public:
+    int missingNumber(vector<int>& nums) {
+        int i;
+        for(i=0; i<nums.size(); i++)
+        {
+            if(nums[i] != i) return i;
+        }
+        return i;
+    }
+};
+```  
+(2)二分  
+```
+class Solution {
+public:
+    int missingNumber(vector<int>& nums) {
+        int n = nums.size();
+        int left=0, right=n-1;
+        while(left<right)
+        {
+            int mid = left + ((right-left)>>1);
+            if(nums[mid]>mid)
+            {
+                right = mid;
+            }
+            else
+            {
+                left = mid + 1;
+            }
+        }
+        if(nums[left]>left) return left;
+        else return left+1;
+    }
+};
+```
+
