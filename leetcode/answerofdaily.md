@@ -139,4 +139,46 @@ public:
         return pre->right;
     }
 };
+```  
+## 1011.在D天内送达包裹的能力(2021/4/26)  
+>https://leetcode-cn.com/problems/capacity-to-ship-packages-within-d-days/  
+***  
+```
+class Solution {
+public:
+    int shipWithinDays(vector<int>& weights, int D) {
+        int left=0,right=0;
+        for(int i=0; i<weights.size(); ++i)
+        {
+            if(weights[i]>left)
+            {
+                left = weights[i];
+            }
+            right += weights[i];
+        }
+        while(left<right)
+        {
+            int mid = left + ((right-left)>>2);
+            int day=1,cur=0;
+            for(int i=0; i<weights.size(); ++i)
+            {
+                if(cur+weights[i]>mid)
+                {
+                    day++;
+                    cur=0;
+                }
+                cur += weights[i];
+            }
+            if(day<=D)
+            {
+                right = mid;
+            }
+            else
+            {
+                left = mid + 1;
+            }
+        }
+        return left;
+    }
+};
 ```
