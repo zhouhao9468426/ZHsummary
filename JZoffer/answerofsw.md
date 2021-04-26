@@ -1560,4 +1560,106 @@ public:
         return res;
     }
 };
+```  
+## 46.把数字翻译成字符串  
+>https://leetcode-cn.com/problems/ba-shu-zi-fan-yi-cheng-zi-fu-chuan-lcof/  
+***   
+递归：  
+```
+class Solution {
+    int res=0;
+    void translateNum(string &num,int start) {
+        if(start==num.size()){//结束条件
+            res++;
+            return;
+        }
+        translateNum(num,start+1);//分支1
+        string ss=num.substr(start,2);
+        if(stoi(ss)<=25&&stoi(ss)>=10) {//剪枝操作
+            translateNum(num,start+2);//分支2
+        }
+    }
+public:
+    int translateNum(int num) {
+        string s=to_string(num);
+        translateNum(s,0);
+        return res;
+    }
+};
+```  
+DP:  
+```
+class Solution {
+public:
+    int translateNum(int num) {
+        string str = "0" + to_string(num);
+        vector<int> dp(str.size());
+        dp[0]=1;
+        dp[1]=1;
+        for(int i=2; i<str.size(); ++i)
+        {
+            dp[i] = dp[i-1];
+            int tmp = stoi(str.substr(i-1,2));
+            if(tmp<=25 && tmp>=10)
+            {
+                dp[i]+=dp[i-2];
+            }
+        }
+        return dp[str.size()-1];
+    }
+};
+```   
+## 47.礼物的最大价值  
+>https://leetcode-cn.com/problems/li-wu-de-zui-da-jie-zhi-lcof/  
+***  
+动态规划:  
+```
+class Solution {
+public:
+    int maxValue(vector<vector<int>>& grid) {
+        int m = grid.size(),n=grid[0].size();
+        for(int j=1; j<n; ++j)
+        {
+            grid[0][j] += grid[0][j-1];
+        }
+        for(int i=1; i<m; ++i)
+        {
+            grid[i][0] += grid[i-1][0];
+        }
+        for(int i=1;i<m;++i)
+        {
+            for(int j=1;j<n;++j)
+            {
+                grid[i][j] += max(grid[i-1][j],grid[i][j-1]);
+            }
+        }
+        return grid[m-1][n-1];
+    }
+};
+```  
+回溯(超时)：   
+
+```
+class Solution {
+    vector<vector<int>> result;
+    vector<int> path;
+    int res=0;
+    void backtrack(vector<vector<int>>& grid, int i, int j, int sum)
+    {
+        if(i>=grid.size() || j>=grid[0].size()) return;
+        sum += grid[i][j];
+        if(i==grid.size()-1 && j==grid[0].size()-1 && res < sum)
+        {
+            res = sum;
+        }
+        backtrack(grid,i+1,j,sum);
+        backtrack(grid,i,j+1,sum);
+        sum -= grid[i][j];
+    }
+public:
+    int maxValue(vector<vector<int>>& grid) {
+        backtrack(grid,0,0,0);
+        return res;
+    }
+};
 ```
