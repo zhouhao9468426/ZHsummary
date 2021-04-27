@@ -181,4 +181,25 @@ public:
         return left;
     }
 };
+```  
+## 938.二叉搜索树范围和(2021/4/27)
+>https://leetcode-cn.com/problems/range-sum-of-bst/  
+*** 
+```
+class Solution {
+    int res=0;
+    void dfs(TreeNode* root, int low, int high)
+    {
+        if(root == nullptr) return;
+        if(root->val<=high && root->val>=low) res += root->val;
+        dfs(root->left,low,high);
+        dfs(root->right,low,high);
+    }
+public:
+    int rangeSumBST(TreeNode* root, int low, int high) {
+        res = 0;
+        dfs(root,low,high);
+        return res;
+    }
+};
 ```
