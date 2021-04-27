@@ -1971,5 +1971,30 @@ public:
         else return left+1;
     }
 };
+```  
+## 54.二叉搜索树的第k大结点  
+>https://leetcode-cn.com/problems/er-cha-sou-suo-shu-de-di-kda-jie-dian-lcof/  
+***  
+```
+class Solution {
+public:
+    int kthLargest(TreeNode* root, int k) {
+        stack<TreeNode*> stk;
+        TreeNode* cur = root;
+        while(!stk.empty() || cur)
+        {
+            while(cur)
+            {
+                stk.push(cur);
+                cur = cur->right;
+            }
+            cur = stk.top();
+            stk.pop();
+            if(!(--k)) return cur->val;
+            cur = cur->left;
+        }
+        return cur->val;
+    }
+};
 ```
 
