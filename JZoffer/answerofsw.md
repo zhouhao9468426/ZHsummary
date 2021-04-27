@@ -2283,8 +2283,82 @@ public:
     }
 };
 ```  
-## 59.滑动窗口最大值  
+## 59.滑动窗口最大值(单调队列) 
 >https://leetcode-cn.com/problems/hua-dong-chuang-kou-de-zui-da-zhi-lcof/  
+***  
+```
+class Solution {
+public:
+    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        vector<int> res;
+        if(nums.size()==0) return res;
+        deque<int> deq;
+        for(int i=0; i<k; ++i)
+        {
+            while(!deq.empty() && deq.back()<nums[i])
+            {
+                deq.pop_back();
+            }
+            deq.push_back(nums[i]);
+        }
+        res.push_back(deq.front());
+        for(int i=k; i<nums.size(); ++i)
+        {
+            if(nums[i-k] == deq.front())
+            {
+                deq.pop_front();
+            }
+            while(!deq.empty() && deq.back() < nums[i])
+            {
+                deq.pop_back();
+            }
+            deq.push_back(nums[i]);
+            res.push_back(deq.front());
+        }
+        return res;
+    }
+};
+```  
+## 59.队列最大值  
+>https://leetcode-cn.com/problems/dui-lie-de-zui-da-zhi-lcof/  
+***  
+```
+class MaxQueue {
+    queue<int> data;
+    deque<int> aux;
+public:
+    MaxQueue() {
+
+    }
+    
+    int max_value() {
+        if(aux.empty()) return -1;
+        return aux.front();
+    }
+    
+    void push_back(int value) {
+        while(!aux.empty() && aux.back() < value)
+        {
+            aux.pop_back();
+        }
+        aux.push_back(value);
+        data.push(value);
+    }
+    
+    int pop_front() {
+        if(data.empty()) return -1;
+        int ans = data.front();
+        if(ans == aux.front())
+        {
+            aux.pop_front();
+        }
+        data.pop();
+        return ans;
+    }
+};
+```  
+## 60.n个骰子的点数  
+>https://leetcode-cn.com/problems/nge-tou-zi-de-dian-shu-lcof/  
 ***  
 ```
 
