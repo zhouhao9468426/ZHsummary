@@ -2361,7 +2361,299 @@ public:
 >https://leetcode-cn.com/problems/nge-tou-zi-de-dian-shu-lcof/  
 ***  
 ```
-
+class Solution {
+public:
+    vector<double> dicesProbability(int n) {
+        //dp[i][j]：表示i个骰子点数之和为j的事件个数  
+        vector<double> res(n*6-n+1);
+        vector<vector<int>> dp(n+1,vector<int>(6*n+1));
+        for(int i=1; i<=6; ++i)
+        {
+            dp[1][i] = 1;
+        }
+        for(int i = 2; i<=n; ++i)
+        {
+            for(int j = i; j<=6*n; ++j)
+            {
+                for(int k=1; k<=6; ++k)
+                {
+                    if(j-k<=0) break;
+                    dp[i][j] += dp[i-1][j-k];
+                }
+            }
+        }
+        double total = pow(6.0,n);
+        for(int i=n; i<=6*n; ++i)
+        {
+            res[i-n] = dp[n][i]/total;
+        }
+        return res;
+    }
+};
+```  
+## 61.扑克牌中的顺子  
+>https://leetcode-cn.com/problems/bu-ke-pai-zhong-de-shun-zi-lcof/  
+***  
+```
+class Solution {
+public:
+    bool isStraight(vector<int>& nums) {
+        int minIndex = 0;
+        sort(nums.begin(),nums.end());
+        for(int i=0; i<nums.size()-1;++i)
+        {
+            if(nums[i]==nums[i+1] && nums[i]!=0) return false;
+            if(nums[i]==0) minIndex++;
+        }
+        return nums[4]-nums[minIndex]<5;
+    }
+};
+```  
+## 62.约瑟夫环问题  
+>https://leetcode-cn.com/problems/yuan-quan-zhong-zui-hou-sheng-xia-de-shu-zi-lcof/  
+***  
+(1)循环链表(超时)
+```
+class Solution {
+public:
+    int lastRemaining(int n, int m) {
+        ListNode* head = new ListNode(0);
+        ListNode* p = head;
+        for(int i=1; i<n; ++i)
+        {
+            p->next = new ListNode(i);
+            p = p->next;
+        }
+        p->next = head;
+        while(p->next != p)
+        {
+            for(int i=0; i<m-1; i++)
+            {
+                p = p->next;
+            }
+            p->next = p->next->next;
+        }
+        return p->val;
+    }
+};
+```  
+(2)数学规律  
+```
+class Solution {
+public:
+    int lastRemaining(int n, int m) {
+        if(n==1) return 0;
+        int pos=0;
+        for(int i=2; i<=n; ++i)
+        {
+            pos = (pos + m)%i;
+        }
+        return pos;
+    }
+};
+```  
+## 63.股票的最大利润  
+>https://leetcode-cn.com/problems/gu-piao-de-zui-da-li-run-lcof/  
+***  
+```
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int minPrice = INT_MAX;
+        int res = 0;
+        for(int i=0; i<prices.size(); ++i)
+        {
+            res = max(res,prices[i]-minPrice);
+            minPrice = min(minPrice,prices[i]);
+        }
+        return res;
+    }
+};
+```  
+## 64.不用乘除法(控制语句)求和  
+>https://leetcode-cn.com/problems/qiu-12n-lcof/  
+***  
+```
+class Solution {
+public:
+    int sumNums(int n) {
+        n && (n += sumNums(n-1));
+        return n;
+    }
+};
+```   
+## 65.不用加减乘除做加法  
+>https://leetcode-cn.com/problems/bu-yong-jia-jian-cheng-chu-zuo-jia-fa-lcof/  
+***  
+```
+class Solution {
+public:
+    int add(int a, int b) {
+        if (b == 0) {
+            return a;
+        }
+        int sum = a ^ b;
+        int carry = (unsigned int) (a & b) << 1;
+        a = sum;
+        b = carry;
+        return add(a, b);
+    }
+};
+```  
+## 66.构建乘积数组  
+>https://leetcode-cn.com/problems/gou-jian-cheng-ji-shu-zu-lcof/  
+***  
+(1)使用了除法
+```
+class Solution {
+public:
+    vector<int> constructArr(vector<int>& a) {
+        int total = 1;
+        int zeroCount = 0;
+        int index = 0;
+        for(int i=0; i<a.size(); ++i)
+        {
+            if(a[i]==0)
+            {
+                index = i;
+                zeroCount++;
+            }
+            else
+            {
+                total *= a[i];
+            }
+        }
+        vector<int> res(a.size());
+        //0的个数多余1
+        if(zeroCount>1) return res;
+        //0的个数为1
+        else if(zeroCount==1) 
+        {
+            res[index] = total;
+        }
+        //没有0
+        else
+        {
+            for(int i=0; i<a.size(); ++i)
+            {
+                res[i] = total/a[i];
+            }
+        }
+        return res;
+    }
+};
+```  
+(2)不使用除法  
+```
+class Solution {
+public:
+    vector<int> constructArr(vector<int>& a) {
+        int n = a.size();
+        if(n==0) return {};
+        if(n==1) return {a[0]};
+        vector<int> res(n),left(n),right(n);
+        left[0] = 1;
+        left[1] = a[0];
+        for(int i=2; i<n; ++i)
+        {
+            left[i] = left[i-1]*a[i-1];
+        }
+        right[n-1] = 1;
+        right[n-2] = a[n-1];
+        for(int i = n-3; i>=0; --i)
+        {
+            right[i]  = right[i+1]*a[i+1];
+        }
+        for(int i=0; i<n; ++i)
+        {
+            res[i] = left[i]*right[i];
+        }
+        return res;
+    }
+};
+```  
+## 67.字符串换成整数  
+>https://leetcode-cn.com/problems/ba-zi-fu-chuan-zhuan-huan-cheng-zheng-shu-lcof/  
+***  
+```
+class Solution {
+public:
+    int strToInt(string str) {
+        if(str.size()==0) return 0;
+        int flag = 1;
+        int i=0;
+        while(i<str.size() && str[i] == ' ')
+        {
+            i++;
+        }
+        if(str[i]=='-')
+        {
+            flag = -1;
+        }
+        if(str[i]=='-' || str[i]=='+')
+        {
+            i++;
+        }
+        long res=0;
+        while(i<str.size())
+        {
+            if(str[i]<'0' || str[i]>'9') break;
+            if(res>INT_MAX/10 || (res == INT_MAX/10 && str[i]>'7'))
+            {
+                return flag==1 ? INT_MAX : INT_MIN;
+            }
+            res = res*10 + str[i] - '0';
+            //cout << res << endl;
+            i++;
+        }
+        return res*flag;
+    }
+};
+```  
+## 68.二叉搜索树的最近公共祖先  
+>https://leetcode-cn.com/problems/er-cha-sou-suo-shu-de-zui-jin-gong-gong-zu-xian-lcof/  
+***  
+```
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        while (root) {
+            if (p->val < root->val && q->val < root->val) 
+            {
+                root = root->left;
+            }
+            else if (p->val > root->val && q->val > root->val) 
+            {
+                root = root->right;
+            }
+            else 
+            {
+                return root;
+            }
+        }
+        return nullptr;
+    }
+};
+```  
+## 68.二叉树的最近公共祖先  
+>https://leetcode-cn.com/problems/er-cha-shu-de-zui-jin-gong-gong-zu-xian-lcof/  
+***  
+```
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if(root==p || root==q || root==nullptr) return root;
+        TreeNode* left = lowestCommonAncestor(root->left,p,q);
+        TreeNode* right = lowestCommonAncestor(root->right,p,q);
+        if(left==nullptr && right==nullptr) return nullptr;
+        else if(left==nullptr && right) return right;
+        else if(left && right==nullptr) return left;
+        else
+        {
+            return root;
+        }
+    }
+};
 ```
 
 
