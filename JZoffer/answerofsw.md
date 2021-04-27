@@ -1996,5 +1996,239 @@ public:
         return cur->val;
     }
 };
+```  
+## 55.二叉树的深度  
+>https://leetcode-cn.com/problems/er-cha-shu-de-shen-du-lcof/  
+***  
+(1)DFS
 ```
+class Solution {
+public:
+    int maxDepth(TreeNode* root) {
+        if(!root) return 0;
+        return 1+max(maxDepth(root->left),maxDepth(root->right));
+    }
+};
+```   
+(2)BFS  
+```
+class Solution {
+public:
+    int maxDepth(TreeNode* root) {
+        if(root==nullptr) return 0;
+        queue<TreeNode*> que;
+        que.push(root);
+        int res = 0;
+        while(!que.empty())
+        {
+            int sz = que.size();
+            for(int i=0; i<sz; ++i)
+            {
+                TreeNode* node = que.front();
+                que.pop();
+                if(node->left) que.push(node->left);
+                if(node->right) que.push(node->right);
+            }
+            res++;
+        }
+        return res;
+    }
+};
+```  
+## 55.平衡二叉树  
+>https://leetcode-cn.com/problems/ping-heng-er-cha-shu-lcof/  
+***  
+```
+class Solution {
+    int depth(TreeNode* root)
+    {
+        if(root==nullptr) return 0;
+        return max(depth(root->left),depth(root->right))+1;
+    }
+public:
+    bool isBalanced(TreeNode* root) {
+        if(root==nullptr) return true;
+        bool flag = abs(depth(root->left)-depth(root->right))<=1;
+        return flag && isBalanced(root->left) && isBalanced(root->right);
+    }
+};
+```  
+## 56.数组中数字出现的次数  
+>https://leetcode-cn.com/problems/shu-zu-zhong-shu-zi-chu-xian-de-ci-shu-lcof/  
+***    
+(1)哈希
+```
+class Solution {
+public:
+    vector<int> singleNumbers(vector<int>& nums) 
+    {
+        unordered_map<int,int> map;
+        vector<int> res;
+        int k=0;
+        for(int i=0; i<nums.size(); i++)
+        {
+            map[nums[i]]++;
+        }
+        for(int i=0;i<nums.size();i++)
+        {
+            if(k==2) break;
+            if(map[nums[i]] == 1)
+            {
+                res.push_back(nums[i]);
+                k++;
+            }
+        }
+        return res;
+    }
+};
+```  
+(2)异或  
+```
+class Solution {
+public:
+    vector<int> singleNumbers(vector<int>& nums) {
+        int res = 0;
+        for(int i=0; i<nums.size(); ++i)
+        {
+            res ^= nums[i];
+        }
+        int div = 1;
+        while((div&res)==0)
+        {
+            div = (div<<1);
+        }
+        int x=0,y=0;
+        for(int i=0; i<nums.size(); ++i)
+        {
+            if(div & nums[i])
+            {
+                x ^= nums[i];
+            }
+            else
+            {
+                y ^= nums[i];
+            }
+        }
+        return vector<int>{x,y};
+    }
+};
+```  
+## 56.数组中数字出现的次数  
+>https://leetcode-cn.com/problems/shu-zu-zhong-shu-zi-chu-xian-de-ci-shu-ii-lcof/  
+***    
+(1)哈希
+```
+class Solution {
+public:
+    int singleNumber(vector<int>& nums) 
+    {
+        unordered_map<int,int> map;
+        int res;
+        for(int i=0; i<nums.size(); i++)
+        {
+            map[nums[i]]++;
+        }
+        for(int i=0; i<nums.size();i++)
+        {
+            if(map[nums[i]]==1)
+            {
+                res = nums[i];
+                break;
+            }
+        }
+        return res;
+    }
+};
+```  
+(2)位运算 
+```
+class Solution {
+public:
+    int singleNumber(vector<int>& nums) {
+        //将nums所有元素转为二进制并且加起来  
+        vector<int> res(32);
+        for(int i=0; i<nums.size(); ++i)
+        {
+            int tmp = nums[i];
+            for(int j=31; j>=0; --j)
+            {
+                res[j] += (tmp & 1);
+                tmp = (tmp>>1);
+            }
+        }
+        int ret=0;
+        for(int i=0; i<32; ++i)
+        {
+            if(res[i]%3)
+            {
+                ret += pow(2,31-i);
+            }
+        }
+        return ret;
+    }
+};
+```   
+## 57.和为target的两个数字  
+>https://leetcode-cn.com/problems/he-wei-sde-liang-ge-shu-zi-lcof/  
+***  
+```
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        int n = nums.size();
+        int left = 0, right = n-1;
+        vector<int> res;
+        while(left<right)
+        {
+            if(nums[left]+nums[right]<target) left++;
+            else if(nums[left]+nums[right]>target) right--;
+            else 
+            {
+                res.push_back(nums[left]);
+                res.push_back(nums[right]);
+                break;
+            }
+        }
+        return res;
+    }
+};
+```  
+## 58.和为s的连续正数序列  
+>https://leetcode-cn.com/problems/he-wei-sde-lian-xu-zheng-shu-xu-lie-lcof/  
+***  
+```
+class Solution {
+public:
+    vector<vector<int>> findContinuousSequence(int target) {
+        int left=1,right=2;
+        vector<vector<int>> res;
+        vector<int> tmp;
+        int sum = 0;
+        while(left<right)
+        {
+            sum = ((left + right)*(right-left+1)/2);
+            if(sum == target)
+            {
+                tmp.clear();
+                for(int i=left; i<=right; ++i)
+                {
+                    tmp.push_back(i);
+                }
+                res.push_back(tmp);
+                left++;
+            }
+            else if(sum<target)
+            {
+                right++;
+            }
+            else
+            {
+                left++;
+            }
+        }
+        return res;
+    }
+};
+```  
+
 
