@@ -2229,6 +2229,65 @@ public:
         return res;
     }
 };
+```   
+## 58.翻转单词顺序  
+>https://leetcode-cn.com/problems/fan-zhuan-dan-ci-shun-xu-lcof/  
+***  
+```
+class Solution {
+public:
+    string reverseWords(string s) {
+        stack<string> stk;
+        int left=0, right=0;
+        while(left<s.size() && right<s.size())
+        {
+            while(left < s.size() && s[left]==' ')
+            {
+                left++;
+            }
+            if(left >= s.size()) break;
+            right = left;
+            while(right < s.size() && s[right]!=' ')
+            {
+                right++;
+            }
+            if(s[right]==' ')//关键
+            {
+                right--;
+            }
+            cout << s.substr(left,right-left+1) << right-left+1 << endl;
+            stk.push(s.substr(left,right-left+1));
+            left = right+1;
+        }
+        string res;
+        while(!stk.empty())
+        {
+            res += stk.top()+' ';
+            stk.pop();
+        }
+        return res.substr(0,res.size()-1);
+    }
+};
 ```  
+## 58.左旋转字符串  
+>https://leetcode-cn.com/problems/zuo-xuan-zhuan-zi-fu-chuan-lcof/  
+***  
+```
+class Solution {
+public:
+    string reverseLeftWords(string s, int n) {
+        int len = s.size();
+        string s1 = s.substr(0,n);
+        string s2 = s.substr(n,len-n);
+        return s2+s1;
+    }
+};
+```  
+## 59.滑动窗口最大值  
+>https://leetcode-cn.com/problems/hua-dong-chuang-kou-de-zui-da-zhi-lcof/  
+***  
+```
+
+```
 
 
