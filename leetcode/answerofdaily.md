@@ -202,4 +202,29 @@ public:
         return res;
     }
 };
+```  
+## 633.平方数之和(2021/4/28)  
+>https://leetcode-cn.com/problems/sum-of-square-numbers/  
+*** 
+```
+class Solution {
+public:
+    bool judgeSquareSum(int c) {
+        long left=0, right=sqrt(c)+1;
+        while(left <= right)
+        {
+            long sum = left*left + right*right;
+            if(sum==c) return true;
+            else if(sum<c) 
+            {
+                left++;
+            }
+            else
+            {
+                right--;
+            }
+        }
+        return false;
+    }
+};
 ```
