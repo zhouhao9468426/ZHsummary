@@ -1,6 +1,6 @@
 # C++关键字  
 >https://blog.csdn.net/qq_35671135/article/details/88092382  
-###1.关键字分类及简介   
+### 1.关键字分类及简介   
 >https://www.runoob.com/w3cnote/cpp-keyword-intro.html  
 >https://blog.csdn.net/qq_35671135/article/details/88092382
 >https://www.cnblogs.com/zxj9487/p/10964968.html
@@ -23,7 +23,7 @@
 命名空间：namespace，using  
 异常处理：throw，try，catch  
 ***  
-###1.1数据类型相关  
+### 1.1数据类型相关  
 >https://www.runoob.com/cplusplus/cpp-data-types.html  
 >https://blog.csdn.net/qq_35671135/article/details/88092382
 ***  
@@ -125,7 +125,7 @@ const 是 constant 的缩写，本意是不变的，不易改变的意思。在 
 - 当读取一个变量时，为提高存取速度，编译器优化时有时会先把变量读取到一个寄存器中，以后再取变量值时，就直接从寄存器中取值
 - 优化器在用到volatile变量时必须每次都小心地重新读取这个变量的值，而不是使用保存到寄存器里的备份。
 - volatile适用于多线程应用中被几个任务共享的变量。
-####一、const修饰普通类型变量 
+#### 一、const修饰普通类型变量 
 (1)不能对一个常量赋值
 ```
 const int a = 7;
@@ -158,7 +158,7 @@ int main()
     return 0;
 }
 ```    
-####二、const修饰指针变量  
+#### 二、const修饰指针变量  
 (1)const修饰指针所指的对象，对象不可改变   
 const int* p = 8;
 (2)const修饰指针本身，指针本身不能变,内容可变    
@@ -166,7 +166,7 @@ int *const int
 (3)两者都修饰  
 const int *const int   
 ***  
-####三、const参数传递和函数返回值   
+#### 三、const参数传递和函数返回值   
 修饰函数参数有三种情况：
 (1)值传递的const修饰，*一般而言这种情况不需要const修饰，因为函数会自动产生临时变量复制实参*  
 ```
@@ -353,7 +353,7 @@ int main()
 ```   
 (14)常量表达式是指值不会改变并且在编译过程中就能得到计算结果的表达式
 ***
-#####(2)enum关键字的应用
+##### (2)enum关键字的应用
 >https://www.runoob.com/w3cnote/cpp-enum-intro.html  
 enum 类型名 {枚举常量表}；   
 enum fruit_set {apple, orange, banana=1, peach, grape}//枚举常量apple=0,orange=1, banana=1,peach=2,grape=3。  
@@ -361,10 +361,10 @@ tips:
 (1)枚举常量不会占用对象空间，他们在编译时被全部求值  
 (2)隐含的数据类型是整数，最大值有限而且不能表示浮点数
 ***
-#####(3)export  
+##### (3)export  
 使用该关键字可实现模板函数的外部调用。对模板类型，可以在头文件中声明模板类和模板函数；在代码文件中，使用关键字export来定义具体的模板类对象和模板函数；然后在其他用户代码文件中，包含声明头文件后，就可以使用该这些对象和函数  
 ***
-#####(4)extern  
+##### (4)extern  
 1)extern介绍
 extern（外部的）声明变量或函数为外部链接，即该变量或函数名在其它文件中可见。被其修饰的变量（外部变量）是静态分配空间的，即程序开始时分配，结束时释放。用其声明的变量或函数应该在别的文件或同一文件的其它地方定义（实现）。在文件内声明一个变量或函数默认为可被外部使用。在 C++ 中，还可用来指定使用另一语言进行链接，这时需要与特定的转换符一起使用。目前仅支持 C 转换标记，来支持 C 编译器链接。使用这种情况有两种形式：
 extern "C"
@@ -406,13 +406,13 @@ int add(){
 //xx.c
 extern int add();
 ```
-#####(5)public、protected、private  
+##### (5)public、protected、private  
 1)这三个都为权限修饰符。public为公有的，访问不受限制；protected为保护的，只能在本类和友元中访问；private为私有的，只能在本类、派生类和友元中访问。
 2)class默认访问权限是private的，struct默认访问权限是public的。  
 3)public继承，派生类成员函数可以访问public、protected成员变量，派生类实例只能访问public成员变量；protected继承，派生类成员函数可以访问public、protected成员变量，派生类实例无法访问任何基类成员；private继承，成员函数可以访问public、protected成员，派生类实例无法访问任何基类成员。  
-#####(6)template  
+##### (6)template  
 声明一个模板，模板函数，模板类等。模板的特化。  
-#####(7)static  
+##### (7)static  
 
 
 
