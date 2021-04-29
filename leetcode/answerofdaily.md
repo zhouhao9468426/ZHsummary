@@ -227,4 +227,84 @@ public:
         return false;
     }
 };
+```  
+## 679.24点游戏(2021/4/29)   
+>https://leetcode-cn.com/problems/24-game/  
+方法一：  
+```
+class Solution{
+    void backtrack(vector<double> &arr, double eps, bool &res)
+    {
+        if(res) return;
+        if(arr.size()==1)
+        {
+            if(abs(arr[0]-24)<eps)
+            {
+                res = true;
+            }
+            return;
+        }
+        for(int i=0; i<arr.size(); ++i)
+        {
+            for(int j=0; j<i; ++j)
+            {
+                double num1 = arr[i],num2=arr[j];
+                vector<double> data = {num1+num2,num1*num2,num1-num2,num2-num1};
+                if(num1>eps) data.push_back(num2/num1);
+                if(num2>eps) data.push_back(num1/num2);
+                arr.erase(arr.begin()+i);
+                arr.erase(arr.begin()+j);
+                for(auto tmp:data)
+                {
+                    arr.push_back(tmp);
+                    backtrack(arr,eps,res);
+                    arr.pop_back();
+                }
+                arr.insert(arr.begin()+j,num2);
+                arr.insert(arr.begin()+i,num1);
+            }
+        }
+    }
+public:
+    bool judgePoint24(vector<int>& nums) {
+        bool res = false;
+        double eps = 0.00001;
+        vector<double> arr(nums.begin(),nums.end());
+        backtrack(arr,eps,res);
+        return res;
+    }
+};
+```   
+方法二：  
+```
+class Solution {
+public:
+    bool canCross(vector<int>& stones) {
+        int n = stones.size();
+        if(stones[1]>1) return false;
+        vector<vector<bool>> dp(n,vector<bool>(n));
+        dp[0][0] = true;
+        for(int i=1; i<n; ++i)
+        {
+            if(stones[i]-stones[i-1]>i)
+            {
+                return false;
+            }
+        }
+        for(int i=1; i<n; ++i)
+        {
+            for(int j=0; j<i; ++j)
+            {
+                int k = stones[i]-stones[j];
+                if(k>j+1) continue;
+                if(k>0)
+                {
+                    dp[i][k] = dp[j][k-1] || dp[j][k] || dp[j][k+1];
+                }
+                if(dp[i][k] && i==n-1) return true;
+            }
+        }
+        return false;
+    }
+};
 ```
