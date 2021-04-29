@@ -413,9 +413,146 @@ extern int add();
 ##### (6)template  
 声明一个模板，模板函数，模板类等。模板的特化。  
 ##### (7)static  
+>https://www.runoob.com/w3cnote/cpp-static-usage.html
+>https://light-city.club/sc/basic_content/static/
+可修饰变量、也可以修饰函数和类中的成员函数。static修饰的变量的周期是整个函数的生命周期。具有静态生存期的变量，只在函数第一次调用时进行初始化，在没有显示初始化的情况下，系统将他们初始化为0.
+1)函数中的静态变量  
+```
+#include<iostream>
+using namespace std;
+void test()
+{
+    static int num = 0;
+    cout << num << ' ';
+    num++;
+}
+int main()
+{
+    for(int i=0; i<10; ++i)
+    {
+        test();
+    }
+    return 0;
+}
+```  
+2)类中的静态变量  
+由于声明为static的变量只被初始化一次，因为它们在单独的静态存储中分配了空间，因此类中的静态变量由对象共享。对于不同的对象，不能有相同静态变量的多个副本。也是因为这个原因，静态变量不能使用构造函数初始化。
+```
+#include<iostream>
+using namespace std;
+class Test
+{
+public:
+    static int num;
+    Test(){};
+};
+int Test::num = 5;
+int main()
+{
+    Test obj1,obj2;
+    obj1.num = 1;
+    obj2.num = 3;
+    cout << obj1.num << ' ' << obj2.num << endl;
+    return 0;
+}
+```  
+3)类对象为静态  
+```
+//非静态对象
+#include<iostream>
+using namespace std;
+class Test
+{
+public:
+    static int num;
+    Test()
+    {
+        cout << "constructed is called" << endl;
+    }
+    ~Test()
+    {
+        cout << "deconstructed is called" << endl;
+    }
+};
+int Test::num = 5;
+int main()
+{
+    int x=0;
+    if(x==0)
+    {
+        Test obj;
+    }
+    cout << "end of main \n";
+}
+constructed is called
+deconstructed is called
+end of main
+//静态对象  
+#include<iostream>
+using namespace std;
+class Test
+{
+public:
+    static int num;
+    Test()
+    {
+        cout << "constructed is called" << endl;
+    }
+    ~Test()
+    {
+        cout << "deconstructed is called" << endl;
+    }
+};
+int Test::num = 5;
+int main()
+{
+    int x=0;
+    if(x==0)
+    {
+        static Test obj;
+    }
+    cout << "end of main \n";
+}  
+constructed is called
+end of main
+deconstructed is called
+```   
+4)类中的静态函数   
+就像类中的静态数据成员或静态变量一样，静态成员函数也不依赖于类的对象。我们被允许使用对象和'.'来调用静态成员函数。但建议使用类名和范围解析运算符调用静态成员。静态成员函数只能访问静态数据成员和其他静态成员函数，他们无法访问类的非静态成员或非静态成员函数。   
+5)static的作用  
+- static 是 C/C++ 中很常用的修饰符，它被用来控制变量的存储方式和可见性 
+- 在修饰变量的时候，static 修饰的静态局部变量只执行初始化一次，而且延长了局部变量的生命周期，直到程序运行结束以后才释放
+- static 修饰全局变量的时候，这个全局变量只能在本文件中访问，不能在其它文件中访问，即便是 extern 外部声明也不可以。 
+- static 修饰一个函数，则这个函数的只能在本文件中调用，不能被其他文件调用。static 修饰的变量存放在全局数据区的静态变量区，包括全局静态变量和局部静态变量，都在全局数据区分配内存。初始化的时候自动初始化为 0。
+- 不想被释放的时候，可以使用static修饰。比如修饰函数中存放在栈空间的数组。如果不想让这个数组在函数调用结束释放可以使用 static 修饰
+- 考虑到数据安全性（当程序想要使用全局变量的时候应该先考虑使用 static）
+6)为什么需要static  
+- 想将函数中的的变量保存到下一次调用(比如记录某个函数被调用了几次)：全局变量会破坏变量的访问范围
+- 让某一个数据成员为整个类而不是某个对象服务，却不想破坏封装性，要求成员隐藏在类的内部，对外不可见，可以将其定义为静态数据  
+7)静态数据的存储  
+全局（静态）存储区：分为 DATA 段和 BSS 段。DATA 段（全局初始化区）存放初始化的全局变量和静态变量；BSS 段（全局未初始化区）存放未初始化的全局变量和静态变量。程序运行结束时自动释放。其中BBS段在程序执行之前会被系统自动清0，所以未初始化的全局变量和静态变量在程序执行之前已经为0。存储在静态数据区的变量会在程序刚开始运行时就完成初始化，也是唯一的一次初始化。
 
+在 C++ 中 static 的内部实现机制：静态数据成员要在程序一开始运行时就必须存在。因为函数在程序运行中被调用，所以静态数据成员不能在任何函数内分配空间和初始化。
 
+这样，它的空间分配有三个可能的地方，一是作为类的外部接口的头文件，那里有类声明；二是类定义的内部实现，那里有类的成员函数定义；三是应用程序的 main() 函数前的全局数据声明和定义处。
 
+静态数据成员要实际地分配空间，故不能在类的声明中定义（只能声明数据成员）。类声明只声明一个类的"尺寸和规格"，并不进行实际的内存分配，所以在类声明中写成定义是错误的。它也不能在头文件中类声明的外部定义，因为那会造成在多个使用该类的源文件中，对其重复定义。
+
+static 被引入以告知编译器，将变量存储在程序的静态存储区而非栈上空间，静态数据成员按定义出现的先后顺序依次初始化，注意静态成员嵌套时，要保证所嵌套的成员已经初始化了。消除时的顺序是初始化的反顺序。
+
+优势：可以节省内存，因为它是所有对象所公有的，因此，对多个对象来说，静态数据成员只存储一处，供所有对象共用。静态数据成员的值对每个对象都是一样，但它的值是可以更新的。只要对静态数据成员的值更新一次，保证所有对象存取更新后的相同的值，这样可以提高时间效率。  
+8)C++中static用法  
+类名：：变量名直接引用
+类名：：方法名直接引用
+对象.变量名
+对象.类名  
+9)为什么静态成员函数不能调用非静态成员和非静态成员函数  
+静态成员函数在类实例化对象之前就已经分配了空间，而类的非静态成员在实例化之后才有内存空间，相当于使用了一个还没有声明的变量  
+10)不能通过类名来调用非静态成员函数，可以通过对象类调用静态成员函数和非静态成员函数  
+11)类的非静态成员函数可以调用静态成员函数  
+12)类中的静态成员变量在使用前必须初始化
+>https://blog.csdn.net/qq_35671135/article/details/88092382
+>https://light-city.club/sc/basic_content/static/
 
 
    
