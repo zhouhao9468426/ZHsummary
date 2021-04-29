@@ -1,6 +1,6 @@
 # C++关键字  
 >https://blog.csdn.net/qq_35671135/article/details/88092382  
-### 1.关键字分类及简介   
+## 1.关键字分类及简介   
 >https://www.runoob.com/w3cnote/cpp-keyword-intro.html  
 >https://blog.csdn.net/qq_35671135/article/details/88092382
 >https://www.cnblogs.com/zxj9487/p/10964968.html
@@ -23,11 +23,11 @@
 命名空间：namespace，using  
 异常处理：throw，try，catch  
 ***  
-### 1.1数据类型相关  
+### 1.1 数据类型相关  
 >https://www.runoob.com/cplusplus/cpp-data-types.html  
 >https://blog.csdn.net/qq_35671135/article/details/88092382
 ***  
-(1)bool、true、false  
+#### (1)bool、true、false  
 bool是布尔类型，属于基本类型中的整数类型，取值分为true和false。true和false是具有布尔类型的字面量，是右值（https://zhuanlan.zhihu.com/p/240833006）  
 tips:  
 1)左值可在等号左右两边，右值只能在等号右边；  
@@ -48,14 +48,14 @@ cout << z2 << endl;
 int &&z4 = x; //不能将一个右值引用与一个左值绑定
 ```   
 ***
-(2)char、wchar_t  
+#### (2)char、wchar_t  
 char表示单字节字符，wchar_t表示多字节字符，char、signed char、unsigned char表示了有符号字符和无符号字符两种类型，char不同编译器可能不同；宽字符的定义是为了可以简化使用国际通用字符集进行的编程(typedef unsigned short wchar_t)  
 *** 
-(3) int、double、float、short、long、signed、unsigned    
+#### (3)int、double、float、short、long、signed、unsigned    
 signed和unsigned作为前缀修饰整数类型，分别表示有符号和无符号。signed和unsigned修饰char类型，构成unsigned char和signed char，和char都不是相同的类型；不可修饰wchar_t、char16_t和char32_t。其它整数类型的signed省略或不省略，含义不变。signed或unsigned可单独作为类型，相当于signed int和unsigned int。
 double和float专用于浮点数，double表示双精度，精度不小于float表示的浮点数。long double则是C++11指定的精度不小于double的浮点数。   
 ***
-(4)explicit
+#### (4)explicit
 explicit在C++中一般只用来修饰构造函数，可以禁止编译器自动调用拷贝初始化(对应直接初始化)，还可以禁止编译器对拷贝函数的参数进行隐式转换
 1)explicit只能在类内部使用，不能在外面声明  
 2)声明了explicit之后，就不允许进行隐式转换了
@@ -95,7 +95,7 @@ int main()
 }
 ```   
 ***  
-(5)auto decltype
+#### (5)auto decltype
 1)auto  
 将表达式的值赋给变量，需要清楚地知道表达式的类型，auto关键字会根据初始值自动推断变量的数据类型,不是每个编译器都支持auto。 
 auto x = 7;//推断出x类型为int  
@@ -118,14 +118,14 @@ int main()
 ```  
 ### 1.2 定义、初始化相关  
 ***  
-(1)const、volatile、mutabale、const_cast
+const、volatile、mutabale、const_cast
 1)const  
 const 是 constant 的缩写，本意是不变的，不易改变的意思。在 C++ 中是用来修饰内置类型变量，自定义对象，成员函数，返回值，函数参数。C++ const 允许指定一个语义约束，编译器会强制实施这个约束，允许程序员告诉编译器某值是保持不变的。如果在编程中确实有某个值保持不变，就应该明确使用const，这样可以获得编译器的帮助。
 2)volatile   
 - 当读取一个变量时，为提高存取速度，编译器优化时有时会先把变量读取到一个寄存器中，以后再取变量值时，就直接从寄存器中取值
 - 优化器在用到volatile变量时必须每次都小心地重新读取这个变量的值，而不是使用保存到寄存器里的备份。
 - volatile适用于多线程应用中被几个任务共享的变量。
-#### 一、const修饰普通类型变量 
+#### (1)const修饰普通类型变量 
 (1)不能对一个常量赋值
 ```
 const int a = 7;
@@ -158,7 +158,7 @@ int main()
     return 0;
 }
 ```    
-#### 二、const修饰指针变量  
+const修饰指针变量  
 (1)const修饰指针所指的对象，对象不可改变   
 const int* p = 8;
 (2)const修饰指针本身，指针本身不能变,内容可变    
@@ -166,7 +166,7 @@ int *const int
 (3)两者都修饰  
 const int *const int   
 ***  
-#### 三、const参数传递和函数返回值   
+const参数传递和函数返回值   
 修饰函数参数有三种情况：
 (1)值传递的const修饰，*一般而言这种情况不需要const修饰，因为函数会自动产生临时变量复制实参*  
 ```
@@ -185,7 +185,7 @@ int main()
     return 0;
 }
 ```  
-(2)指针传递的const修饰，可以防止指针被恶意篡改  
+指针传递的const修饰，可以防止指针被恶意篡改  
 ```
 #include<iostream>
 using namespace std;
@@ -204,7 +204,7 @@ int main()
     return 0;
 }
 ```  
-(3)自定义类型的参数传递，需要临时对象复制参数，对于临时对象的构造，需要调用构造函数，比较浪费时间，因此采用const加引用传递的方式，对于内置类型一般不需要采用引用传递的方式。
+自定义类型的参数传递，需要临时对象复制参数，对于临时对象的构造，需要调用构造函数，比较浪费时间，因此采用const加引用传递的方式，对于内置类型一般不需要采用引用传递的方式。
 ***  
 const修饰函数返回值  
 (1)内置类型返回值不需要const修饰，即使加了也没效果  
@@ -244,7 +244,7 @@ int main()
 }
 ```  
 *** 
-#### 四、const修饰类成员函数  
+const修饰类成员函数  
 const 修饰类成员函数，其目的是防止成员函数修改被调用对象的值，如果我们不想修改一个调用对象的值，所有的成员函数都应当声明为const成员函数。
 注意：const 关键字不能与 static 关键字同时使用，因为 static 关键字修饰静态成员函数，静态成员函数不含有 this 指针，即不能实例化，const 成员函数必须具体到某一实例。  
 ```
@@ -268,7 +268,7 @@ int main()
     return 0;
 }
 ```  
-#### 五、const相关知识点  
+const相关知识点  
 (1)const数据成员只在某个对象的生存期内是常量，对于整个类而言是可变的。因为类可以创建多个对象，不同的对象其const数据成员的值可以不同。所以不能在类的声明中初始化const数据成员，因为类的对象没被创建时，编译器不知道const数据成员的值是什么。const数据成员的初始化只能在类的构造函数的初始化列表中进行。要想建立在整个类中都恒定的常量，应该用类中的枚举常量来实现，或者static const。
 (2)C++11之后允许const成员变量直接初始化
 (3)非常量对象可以调用常量成员函数与非常量成员函数，若量函数重载，非常量对象自动调用非常量成员函数版本  
@@ -353,7 +353,7 @@ int main()
 ```   
 (14)常量表达式是指值不会改变并且在编译过程中就能得到计算结果的表达式
 ***
-##### (2)enum关键字的应用
+#### (2)enum关键字的应用
 >https://www.runoob.com/w3cnote/cpp-enum-intro.html  
 enum 类型名 {枚举常量表}；   
 enum fruit_set {apple, orange, banana=1, peach, grape}//枚举常量apple=0,orange=1, banana=1,peach=2,grape=3。  
@@ -361,10 +361,10 @@ tips:
 (1)枚举常量不会占用对象空间，他们在编译时被全部求值  
 (2)隐含的数据类型是整数，最大值有限而且不能表示浮点数
 ***
-##### (3)export  
+#### (3)export  
 使用该关键字可实现模板函数的外部调用。对模板类型，可以在头文件中声明模板类和模板函数；在代码文件中，使用关键字export来定义具体的模板类对象和模板函数；然后在其他用户代码文件中，包含声明头文件后，就可以使用该这些对象和函数  
 ***
-##### (4)extern  
+#### (4)extern  
 1)extern介绍
 extern（外部的）声明变量或函数为外部链接，即该变量或函数名在其它文件中可见。被其修饰的变量（外部变量）是静态分配空间的，即程序开始时分配，结束时释放。用其声明的变量或函数应该在别的文件或同一文件的其它地方定义（实现）。在文件内声明一个变量或函数默认为可被外部使用。在 C++ 中，还可用来指定使用另一语言进行链接，这时需要与特定的转换符一起使用。目前仅支持 C 转换标记，来支持 C 编译器链接。使用这种情况有两种形式：
 extern "C"
@@ -406,13 +406,13 @@ int add(){
 //xx.c
 extern int add();
 ```
-##### (5)public、protected、private  
+#### (5)public、protected、private  
 1)这三个都为权限修饰符。public为公有的，访问不受限制；protected为保护的，只能在本类和友元中访问；private为私有的，只能在本类、派生类和友元中访问。
 2)class默认访问权限是private的，struct默认访问权限是public的。  
 3)public继承，派生类成员函数可以访问public、protected成员变量，派生类实例只能访问public成员变量；protected继承，派生类成员函数可以访问public、protected成员变量，派生类实例无法访问任何基类成员；private继承，成员函数可以访问public、protected成员，派生类实例无法访问任何基类成员。  
-##### (6)template  
+#### (6)template  
 声明一个模板，模板函数，模板类等。模板的特化。  
-##### (7)static  
+#### (7)static  
 >https://www.runoob.com/w3cnote/cpp-static-usage.html
 >https://light-city.club/sc/basic_content/static/
 可修饰变量、也可以修饰函数和类中的成员函数。static修饰的变量的周期是整个函数的生命周期。具有静态生存期的变量，只在函数第一次调用时进行初始化，在没有显示初始化的情况下，系统将他们初始化为0.
