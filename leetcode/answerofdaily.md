@@ -307,4 +307,81 @@ public:
         return false;
     }
 };
+```   
+## 137.只出现一次的数字(2021/4/30)  
+>https://leetcode-cn.com/problems/single-number-ii/  
+***
+![](https://pic.leetcode-cn.com/28f2379be5beccb877c8f1586d8673a256594e0fc45422b03773b8d4c8418825-Picture1.png)  
+***
+```
+class Solution {
+public:
+    int singleNumber(vector<int>& nums) {
+        int ans = 0;
+        for(int i=0; i<32; ++i)
+        {
+            int total = 0;
+            for(auto num:nums)
+            {
+                total += ((num>>i)&1);
+            }
+            if(total%3)
+            {
+                ans = (ans | (1<<i));
+            }
+        }
+        return ans;
+    }
+};
+```  
+## 690.员工的重要性  
+>https://leetcode-cn.com/problems/employee-importance/   
+***  
+```
+class Solution {
+public:
+    int getImportance(vector<Employee*> employees, int id) {
+        unordered_map<int,Employee*> umap;
+        for(auto employee:employees)
+        {
+            umap[employee->id] = employee;
+        }
+        int sum = 0;
+        queue<int> que;
+        que.push(id);
+        while(!que.empty())
+        {
+            int curId = que.front();
+            que.pop();
+            sum += umap[curId]->importance;
+            for(auto tmp:umap[curId]->subordinates)
+            {
+                que.push(tmp);
+            }
+        }
+        return sum;
+    }
+};
+```  
+```
+class Solution {
+    unordered_map<int,Employee*> umap;
+    int dfs(int id)
+    {
+        int ans = umap[id]->importance;
+        for(auto ord : umap[id]->subordinates)
+        {
+            ans += dfs(ord);
+        }
+        return ans;
+    }
+public:
+    int getImportance(vector<Employee*> employees, int id) {
+        for(auto employee:employees)
+        {
+            umap[employee->id] = employee;
+        }
+        return dfs(id);
+    }
+};
 ```
