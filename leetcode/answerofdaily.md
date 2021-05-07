@@ -534,10 +534,11 @@ public:
         return rob(sum);
     }
 };
+<<<<<<< HEAD
 ```  
 ## 1720.解码异或后的数组(2021/5/6)  
->https://leetcode-cn.com/problems/decode-xored-array/  
-***  
+>https://leetcode-cn.com/problems/decode-xored-array/   
+***   
 ```
 class Solution {
 public:
@@ -548,6 +549,22 @@ public:
         for(int i=1; i<n; ++i)
         {
             res[i] = res[i-1] ^ encoded[i-1];
+        }
+        return res;
+    }
+};
+```
+## 1486.数组异或操作(2021/5/7)  
+>https://leetcode-cn.com/problems/xor-operation-in-an-array/  
+***  
+```
+class Solution {
+public:
+    int xorOperation(int n, int start) {
+        int res = 0;
+        for(int i=0; i<n; ++i)
+        {
+            res = res ^ (start + 2*i);
         }
         return res;
     }
