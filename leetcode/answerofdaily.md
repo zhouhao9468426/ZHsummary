@@ -535,7 +535,7 @@ public:
     }
 };
 ``` 
-## 1486.数组异或操作  
+## 1486.数组异或操作(2021/5/7)  
 >https://leetcode-cn.com/problems/xor-operation-in-an-array/  
 ***  
 ```
